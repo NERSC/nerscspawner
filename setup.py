@@ -19,8 +19,8 @@ with open(pjoin(here, 'version.py')) as f:
 setup_args = dict(
         name='nerscspawner',
         packages=['nerscspawner'],
-        data_files=[("share/jupyter/nerscspawner/templates",
-            "templates/spawn.html")],
+        data_files=[("share/nerscspawner/templates",
+            ["templates/spawn.html"])],
         version=version_ns['__version__'],
         description="""NERSC Spawner: Custom spawners for Jupyterhub to spawn
         notebooks at NERSC in various ways""",

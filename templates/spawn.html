@@ -32,28 +32,28 @@
                 <tbody>
                     <tr>
                         <th>Gerty</th>
-                        <td class="text-center"><button type="button" class="btn btn-jupyter">Spawn</button></td>
-                        <td class="text-center"><button type="button" class="btn btn-jupyter">Spawn</button></td>
+                        <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" id="gerty-shared"></td>
+                        <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" id="gerty-exclusive-cpu"></td>
                         <td class="text-center"></td>
-                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#gerty-config">Configure</button></td>
+                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#gerty-config" disabled>Configure</button></td>
                     </tr>
                     <tr>
                         <th>Cori</th>
-                        <td class="text-center"><button type="button" class="btn btn-jupyter">Spawn</button></td>
-                        <td class="text-center"><button type="button" class="btn btn-jupyter">Spawn</button></td>
+                        <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" disabled></td>
+                        <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" disabled></td>
                         <td class="text-center"></td>
-                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#cori-config">Configure</button></td>
+                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#cori-config" disabled>Configure</button></td>
                     </tr>
                     <tr>
                         <th>NERSC9</th>
-                        <td class="text-center"><button type="button" class="btn btn-jupyter">Spawn</button></td>
-                        <td class="text-center"><button type="button" class="btn btn-jupyter">Spawn</button></td>
-                        <td class="text-center"><button type="button" class="btn btn-jupyter">Spawn</button></td>
-                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#n9-config">Configure</button></td>
+                        <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" disabled></td>
+                        <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" disabled></td>
+                        <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" disabled></td>
+                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#n9-config" disabled>Configure</button></td>
                     </tr>
                     <tr>
                         <th>Spin</th>
-                        <td class="text-center"><button type="button" class="btn btn-jupyter">Spawn</button></td>
+                        <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" id="spin"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
@@ -194,6 +194,8 @@
                 </div>
             </div>
 
+            <input id="profile" name="profile" type="hidden" value="none">
+
             <!--
             <br>
             <input type="submit" value="Spawn" class="btn btn-jupyter form-control">
@@ -203,10 +205,32 @@
 </div>
 
 <script>
+// What was this for?
 $(".list-group-item").click(function() {
     $(this).parent().children().removeClass("active");
     $(this).addClass("active");
 });
+
+// From https://stackoverflow.com/a/5721762
+
+$("form").submit(function() { 
+    var id = $("input[type=submit][clicked=true]").attr("id");
+    if(id == "spin") {
+        $("#profile").val(id);
+    }
+    if(id == "gerty-shared") {
+        $("#profile").val(id);
+    }
+    if(id == "gerty-exclusive-cpu") {
+        $("#profile").val(id);
+    }
+});
+
+$("form input[type=submit]").click(function() {
+    $("input[type=submit]", $(this).parents("form")).removeAttr("clicked");
+    $(this).attr("clicked", "true");
+});
+
 </script>
 
 {% endblock %}

@@ -1,7 +1,67 @@
 
-from batchspawner import BatchSpawnerRegexStates
+from jupyterhub.spawner import LocalProcessSpawner, Spawner
 
-from traitlets import Unicode, default
+from batchspawner import BatchSpawnerRegexStates
+from wrapspawner import WrapSpawner
+
+from sshspawner import sshspawner
+
+from traitlets import Dict, List, Tuple, Type, Unicode, default
+
+class NERSCSpawner(WrapSpawner):
+
+    profiles = List(
+            trait=Tuple(Unicode(), Type(Spawner), Dict()),
+            default_value=[("local", LocalProcessSpawner, 
+                {"start_timeout": 15, "http_timeout": 10})],
+            minlen=1,
+            config=True,
+            help="""List of profiles to offer for selection. 
+            
+            Signature: List(Tuple(Unicode, Type(Spawner), Dict)) 
+            For unique spawn key, Spawner type, spawner config options.
+            Currently not used in the template!"""
+    )
+
+    child_profile = Unicode()
+
+    options_form = Unicode("NERSC") # Needed to trigger spawner page
+
+    def options_from_form(self, formdata):
+        # Default to first profile if somehow none is provided
+        return dict(profile=formdata.get("profile", [self.profiles[0][0]])[0])
+
+    # load/get/clear : save/restore child_profile (and on load, use it to update child class/config)
+
+    def select_profile(self, profile):
+        # Select matching profile, or do nothing (leaving previous or default config in place)
+        for p in self.profiles:
+            if p[0] == profile:
+                self.child_class = p[1]
+                self.child_config = p[2]
+                break
+
+    def construct_child(self):
+        self.child_profile = self.user_options.get("profile", "")
+        self.select_profile(self.child_profile)
+        super().construct_child()
+
+    def load_child_class(self, state):
+        try:
+            self.child_profile = state["profile"]
+        except KeyError:
+            self.child_profile = ""
+        self.select_profile(self.child_profile)
+
+    def get_state(self):
+        state = super().get_state()
+        state["profile"] = self.child_profile
+        return state
+
+    def clear_state(self):
+        super().clear_state()
+        self.child_profile = ""
+
 
 class NERSCSlurmSpawner(BatchSpawnerRegexStates):
     """Spawner that connects to a job-submit (login node) and submits a job to
