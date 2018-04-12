@@ -1,0 +1,212 @@
+{% extends "templates/page.html" %}
+
+{% block main %}
+
+<div class="container">
+    <div class="row text-center">
+        <h1>Spawner options</h1>
+    </div>
+    <!-- <div class="row col-sm-offset-2 col-sm-8"> -->
+    <div class="row">
+        {% if for_user and user.name != for_user.name -%}
+        <p>Spawning server for {{ for_user.name }}</p>
+        {% endif -%}
+        {% if error_message -%}
+        <p class="spawn-error-msg text-danger">
+            Error: {{error_message}}
+        </p>
+        {% endif %}
+        <form enctype="multipart/form-data" id="spawn_form" action="{{url}}" method="post" role="form">
+            {# {{spawner_options_form | safe}} #}
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-center">System</th>
+                        <th class="text-center">Shared Node</th>
+                        <th class="text-center">Exclusive CPU Node</th>
+                        <th class="text-center">Exclusive GPU Node</th>
+                        <th class="text-center">Customized Spawn</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Gerty</th>
+                        <td class="text-center"><button type="button" class="btn btn-jupyter">Spawn</button></td>
+                        <td class="text-center"><button type="button" class="btn btn-jupyter">Spawn</button></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#gerty-config">Configure</button></td>
+                    </tr>
+                    <tr>
+                        <th>Cori</th>
+                        <td class="text-center"><button type="button" class="btn btn-jupyter">Spawn</button></td>
+                        <td class="text-center"><button type="button" class="btn btn-jupyter">Spawn</button></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#cori-config">Configure</button></td>
+                    </tr>
+                    <tr>
+                        <th>NERSC9</th>
+                        <td class="text-center"><button type="button" class="btn btn-jupyter">Spawn</button></td>
+                        <td class="text-center"><button type="button" class="btn btn-jupyter">Spawn</button></td>
+                        <td class="text-center"><button type="button" class="btn btn-jupyter">Spawn</button></td>
+                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#n9-config">Configure</button></td>
+                    </tr>
+                    <tr>
+                        <th>Spin</th>
+                        <td class="text-center"><button type="button" class="btn btn-jupyter">Spawn</button></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <ul>
+                                <li>Notebook spawns on a node shared by other users' notebooks, but outside the batch queues.</li>
+                                <li>For visualization and analytics tasks that are not compute or memory intensive.</li>
+                            </ul>
+                        </td>
+                        <td colspan="2">
+                            <ul>
+                                <li>Notebook spawns on a node by itself, in a job allocation.</li>
+                                <li>For visualization, analytics, and machine learning tasks that are compute and/or memory intensive.</li>
+                                <li>Work that can be done on a single node.</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>Multi-node Jupyter-based interactive workflows in a job allocation.</li>
+                                <li>Large-scale data analytics, visualization, amd machine learning.</li>
+                                <li>Use of a reservation or non-default repository.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <!-- Gerty Configuration Modal -->
+            <div class="modal fade" id="gerty-config" tabindex="-1" role="dialog" aria-labelledby="gertyConfigLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Configure Gerty Jupyter Session</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="nodes">Nodes</label>
+                                <input class="form-control" type="number" id="nodes" min="1" max="50" step="1" value="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="timelimit">Time Limit (minutes)</label>
+                                <input class="form-control" type="number" id="nodes" min="1" max="240" step="1" value="120">
+                            </div>
+                            <div class="form-group">
+                                <label for="account">Repository</label>
+                                <select class="form-control" id="account">
+                                    <option>mpccc</option>
+                                    <option>nstaff</option>
+                                    <option>mp90</option>
+                                    <option>m1759</option>
+                                    <option>dasrepo</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="constraint">Constraint</label>
+                                <select class="form-control" id="constraint">
+                                    <option>Haswell</option>
+                                    <option>KNL</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="qos">QOS</label>
+                                <select class="form-control" id="qos">
+                                    <option>jupyter</option>
+                                    <option>regular</option>
+                                    <option>premium</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="image">Shifter Image</label>
+                                <select class="form-control" id="image">
+                                    <option>(None)</option>
+                                    <option>rcthomas/anaconda3-4.4.0-distributed-1.18.0:latest</option>
+                                    <option>rcthomas/dask:0.0.1</option>
+                                    <option>rcthomas/nersc-mpi4py-import:0.0.1</option>
+                                    <option>rcthomas/nersc-mpi4py-import:latest</option>
+                                    <option>rcthomas/nersc-python-bench:0.3.2</option>
+                                    <option>registry.services.nersc.gov/rthomas/desibenchmark:latest</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="reservation">Reservation</label>
+                                <select class="form-control" id="reservation">
+                                    <option>(None)</option>
+                                    <option>GORDON_BELL_2020</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-jupyter">Spawn</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cori Configuration Modal -->
+            <div class="modal fade" id="cori-config" tabindex="-1" role="dialog" aria-labelledby="coriConfigLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Configure Cori Jupyter Session</h4>
+                        </div>
+                        <div class="modal-body">
+                             
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-jupyter">Spawn</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NERSC 9 Configuration Modal -->
+            <div class="modal fade" id="n9-config" tabindex="-1" role="dialog" aria-labelledby="n9ConfigLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Configure NERSC 9 Jupyter Session</h4>
+                        </div>
+                        <div class="modal-body">
+                             
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-jupyter">Spawn</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--
+            <br>
+            <input type="submit" value="Spawn" class="btn btn-jupyter form-control">
+            -->
+        </form>
+    </div>
+</div>
+
+<script>
+$(".list-group-item").click(function() {
+    $(this).parent().children().removeClass("active");
+    $(this).addClass("active");
+});
+</script>
+
+{% endblock %}
