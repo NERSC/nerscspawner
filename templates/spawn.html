@@ -107,7 +107,7 @@
                                 <label for="account">Repository</label>
                                 <select class="form-control" id="account">
                                     {% for account in spawner.accounts %}
-                                    <option>{{ account }} {% "(default)" if loop.first %}</option>
+                                    <option>{{ account }} {{ "(default)" if loop.first }}</option>
                                     {% endfor %}
                                 </select>
                             </div>

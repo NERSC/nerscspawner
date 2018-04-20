@@ -1,4 +1,7 @@
 
+import os
+import urllib.parse
+
 import requests
 
 from jupyterhub.spawner import LocalProcessSpawner, Spawner
