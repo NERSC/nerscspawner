@@ -35,7 +35,7 @@
                         <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" id="gerty-shared"></td>
                         <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" id="gerty-exclusive-cpu"></td>
                         <td class="text-center"></td>
-                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#gerty-config" disabled>Configure</button></td>
+                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#gerty-config">Configure</button></td>
                     </tr>
                     <tr>
                         <th>Cori</th>
@@ -106,11 +106,9 @@
                             <div class="form-group">
                                 <label for="account">Repository</label>
                                 <select class="form-control" id="account">
-                                    <option>mpccc</option>
-                                    <option>nstaff</option>
-                                    <option>mp90</option>
-                                    <option>m1759</option>
-                                    <option>dasrepo</option>
+                                    {% for account in spawner.accounts %}
+                                    <option>{{ account }} {% "(default)" if loop.first %}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <div class="form-group">

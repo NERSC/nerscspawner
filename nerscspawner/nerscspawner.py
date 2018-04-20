@@ -1,4 +1,6 @@
 
+import requests
+
 from jupyterhub.spawner import LocalProcessSpawner, Spawner
 
 from batchspawner import BatchSpawnerRegexStates
@@ -6,7 +8,8 @@ from wrapspawner import WrapSpawner
 
 from sshspawner import sshspawner
 
-from traitlets import Dict, List, Tuple, Type, Unicode, default
+from traitlets import Dict, List, Tuple, Type, Unicode
+from traitlets import HasTraits, default
 
 class NERSCSpawner(WrapSpawner):
 
@@ -26,6 +29,41 @@ class NERSCSpawner(WrapSpawner):
     child_profile = Unicode()
 
     options_form = Unicode("NERSC") # Needed to trigger spawner page
+
+    nim_base_url = Unicode("http://nimprod.nersc.gov:8004",
+            config=True)
+
+    accounts = List()
+
+    @default("accounts")
+    def _accounts(self):
+
+        # Determine user's default repo
+
+        default_repos = self.default_repos()
+        default_repo = default_repos["cori"]
+
+        # Return repos ordered as desired
+
+        repos = sorted(self.repos())
+        repos.remove(default_repo)
+        return [default_repo] + repos
+
+    def repos(self):
+        data = self.nim_request("usage/json/user", self.user.name)
+        return [d["rname"] for d in data["items"] if d["repo_type"] == "REPO"]
+
+    def default_repos(self):
+        data = self.nim_request("info/json/user", self.user.name, "hosts")
+        return dict([(d["hostname"], d["rname"]) for d in data["items"] if d["repo_type"] == "REPO"])
+
+    def nim_request(self, *args):
+        response = requests.get(self.form_nim_url(*args))
+        response.raise_for_status()
+        return response.json()
+
+    def form_nim_url(self, *args):
+        return urllib.parse.urljoin(self.nim_base_url, os.path.join(*args))
 
     def options_from_form(self, formdata):
         # Default to first profile if somehow none is provided
@@ -61,6 +99,11 @@ class NERSCSpawner(WrapSpawner):
     def clear_state(self):
         super().clear_state()
         self.child_profile = ""
+
+
+class NIMInterface(HasTraits):
+
+    
 
 
 class NERSCSlurmSpawner(BatchSpawnerRegexStates):
