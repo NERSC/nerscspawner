@@ -101,11 +101,6 @@ class NERSCSpawner(WrapSpawner):
         self.child_profile = ""
 
 
-class NIMInterface(HasTraits):
-
-    
-
-
 class NERSCSlurmSpawner(BatchSpawnerRegexStates):
     """Spawner that connects to a job-submit (login node) and submits a job to
     start a process running in the Slurm batch queue.
