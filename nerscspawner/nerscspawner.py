@@ -113,9 +113,6 @@ class NERSCSlurmSpawnerBase(BatchSpawnerRegexStates):
     users are on the same compute node, a la shared-interactive, we need to control
     the port selected deterministically or ensure they don't collide in some way."""
 
-    # Not all inheriting classes need a value for this attribute
-    req_nodelist = None
-
      req_qos = Unicode('regular',
             help="QoS name to submit job to resource manager"
             ).tag(config=True)
