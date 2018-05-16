@@ -113,7 +113,9 @@ class NERSCSlurmSpawnerBase(BatchSpawnerRegexStates):
     users are on the same compute node, a la shared-interactive, we need to control
     the port selected deterministically or ensure they don't collide in some way."""
 
-     req_qos = Unicode('regular',
+    # all these req_foo traits will be available as substvars for templated strings
+
+    req_qos = Unicode('regular',
             help="QoS name to submit job to resource manager"
             ).tag(config=True)
 
@@ -138,7 +140,7 @@ class NERSCSlurmSpawnerBase(BatchSpawnerRegexStates):
         return text
 
     # Needs to be implemented by inheriting classes.
-    batch_script = Unicode("""Needs to be implemented by inheriting classes.""").tag(config=True)
+    batch_script = Unicode(""" """).tag(config=True)
 
     prefix = "ssh -q -o StrictHostKeyChecking=no -o preferredauthentications=publickey -l {username} -i /tmp/{username}.key {remote_host} "
 
