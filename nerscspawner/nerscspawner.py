@@ -34,8 +34,8 @@ class NERSCSpawner(WrapSpawner):
 
     options_form = Unicode("NERSC") # Needed to trigger spawner page
 
-    nim_base_url = Unicode("http://nimprod.nersc.gov:8004",
-            config=True)
+    # Adding the config metadata as a keyword argument is apparently deprecated, see here: https://github.com/ipython/traitlets/issues/52
+    nim_base_url = Unicode("http://nimprod.nersc.gov:8004").tag(config=True)
 
     accounts = List()
 
