@@ -112,6 +112,10 @@ class NERSCSlurmSpawner(BatchSpawnerRegexStates):
     users are on the same compute node, a la shared-interactive, we need to control
     the port selected deterministically or ensure they don't collide in some way."""
 
+    exec_prefix = Unicode(
+            "ssh -q -o StrictHostKeyChecking=no -o preferredauthentications=publickey -l {username} -i /tmp/{username}.key {remote_host}",
+            config=True)
+
     # all these req_foo traits will be available as substvars for templated strings
 
     req_qos = Unicode('regular',
@@ -155,14 +159,11 @@ unset XDG_RUNTIME_DIR
 {cmd}
 """).tag(config=True)
 
-    prefix = "ssh -q -o StrictHostKeyChecking=no -o preferredauthentications=publickey -l {username} -i /tmp/{username}.key {remote_host} "
-
     # outputs line like "Submitted batch job 209"
-    batch_submit_cmd = Unicode(prefix + '/usr/bin/sbatch').tag(config=True)
+    batch_submit_cmd = Unicode("/usr/bin/sbatch").tag(config=True)
     # outputs status and exec node like "RUNNING hostname"
-#   batch_query_cmd = Unicode(prefix + 'squeue -h -j {job_id} -o \\"%T %B\\"').tag(config=True) # Added backslashes here for quoting
-    batch_query_cmd = Unicode(prefix + '/usr/bin/python /global/common/shared/das/sdn/getip.py {job_id}').tag(config=True) # Added backslashes here for quoting
-    batch_cancel_cmd = Unicode(prefix + '/usr/bin/scancel {job_id}').tag(config=True)
+    batch_query_cmd = Unicode("/usr/bin/python /global/common/shared/das/sdn/getip.py {job_id}").tag(config=True)
+    batch_cancel_cmd = Unicode("/usr/bin/scancel {job_id}").tag(config=True)
     # use long-form states: PENDING,  CONFIGURING = pending
     #  RUNNING,  COMPLETING = running
     state_pending_re = Unicode(r'^(?:PENDING|CONFIGURING)').tag(config=True)
