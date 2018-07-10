@@ -147,11 +147,8 @@ class NERSCSlurmSpawner(BatchSpawnerRegexStates):
 #SBATCH --job-name=jupyter
 #SBATCH --output=jupyter-%j.log
 #SBATCH --qos={qos}
+#SBATCH --sdn
 #SBATCH --time={runtime}
-
-sdnpath=/global/common/shared/das/sdn
-
-/usr/bin/python $sdnpath/cli.py associate
 
 export PATH=/global/common/cori/software/python/3.6-anaconda-4.4/bin:$PATH
 which jupyterhub-singleuser
