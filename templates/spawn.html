@@ -35,21 +35,21 @@
                         <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" id="gerty-shared"></td>
                         <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" id="gerty-exclusive-cpu"></td>
                         <td class="text-center"></td>
-                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#gerty-config">Configure</button></td>
+                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#gerty-configurable">Configure</button></td>
                     </tr>
                     <tr>
                         <th>Cori</th>
                         <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" disabled></td>
                         <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" disabled></td>
                         <td class="text-center"></td>
-                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#cori-config" disabled>Configure</button></td>
+                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#cori-configurable" disabled>Configure</button></td>
                     </tr>
                     <tr>
                         <th>NERSC9</th>
                         <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" disabled></td>
                         <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" disabled></td>
                         <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" disabled></td>
-                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#n9-config" disabled>Configure</button></td>
+                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#n9-configurable" disabled>Configure</button></td>
                     </tr>
                     <tr>
                         <th>Spin</th>
@@ -87,7 +87,7 @@
             </table>
 
             <!-- Gerty Configuration Modal -->
-            <div class="modal fade" id="gerty-config" tabindex="-1" role="dialog" aria-labelledby="gertyConfigLabel">
+            <div class="modal fade" id="gerty-configurable" tabindex="-1" role="dialog" aria-labelledby="gertyConfigLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -155,7 +155,7 @@
             </div>
 
             <!-- Cori Configuration Modal -->
-            <div class="modal fade" id="cori-config" tabindex="-1" role="dialog" aria-labelledby="coriConfigLabel">
+            <div class="modal fade" id="cori-configurable" tabindex="-1" role="dialog" aria-labelledby="coriConfigLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -174,7 +174,7 @@
             </div>
 
             <!-- NERSC 9 Configuration Modal -->
-            <div class="modal fade" id="n9-config" tabindex="-1" role="dialog" aria-labelledby="n9ConfigLabel">
+            <div class="modal fade" id="n9-configurable" tabindex="-1" role="dialog" aria-labelledby="n9ConfigLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -220,6 +220,9 @@ $("form").submit(function() {
         $("#profile").val(id);
     }
     if(id == "gerty-exclusive-cpu") {
+        $("#profile").val(id);
+    }
+    if(id == "gerty-configurable") {
         $("#profile").val(id);
     }
 });
