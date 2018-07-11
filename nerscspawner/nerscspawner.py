@@ -189,9 +189,9 @@ class NERSCSlurmSpawner(BatchSpawnerRegexStates):
 
 export PATH=/global/common/cori/software/python/3.6-anaconda-4.4/bin:$PATH
 which jupyterhub-singleuser
-{env_text}
+{{ env_text }}
 unset XDG_RUNTIME_DIR
-{cmd}
+{{ cmd }}
 """).tag(config=True)
 
     # outputs line like "Submitted batch job 209"
