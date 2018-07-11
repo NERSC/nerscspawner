@@ -136,6 +136,10 @@ class NERSCSlurmSpawner(BatchSpawnerRegexStates):
 
     # all these req_foo traits will be available as substvars for templated strings
 
+    req_image = Unicode("",
+            help="Shifter image",
+            config=True)
+
     req_nodes = Unicode('1',
             help="Number of nodes",
             config=True)
@@ -147,6 +151,10 @@ class NERSCSlurmSpawner(BatchSpawnerRegexStates):
     req_remote_host = Unicode('remote_host',
                           help="""The SSH remote host to spawn sessions on."""
                           ).tag(config=True)
+
+    req_reservation = Unicode("",
+            help="Reservation.",
+            config=True)
 
     req_constraint = Unicode('haswell',
             help="""Users specify which features are required by their job
@@ -164,14 +172,20 @@ class NERSCSlurmSpawner(BatchSpawnerRegexStates):
         return text
 
     batch_script = Unicode("""#!/bin/bash
-#SBATCH --account={account}
-#SBATCH --constraint={constraint}
+#SBATCH --account={{ account }}
+#SBATCH --constraint={{ constraint }}
+{% if image -%}
+#SBATCH --image={{ image }}
+{% endif -%}
 #SBATCH --job-name=jupyter
-#SBATCH --nodes={nodes}
+#SBATCH --nodes={{ nodes }}
 #SBATCH --output=jupyter-%j.log
-#SBATCH --qos={qos}
+#SBATCH --qos={{ qos }}
+{% if reservation -%}
+#SBATCH --reservation={{ reservation }}
+{% endif -%}
 #SBATCH --sdn
-#SBATCH --time={runtime}
+#SBATCH --time={{ runtime }}
 
 export PATH=/global/common/cori/software/python/3.6-anaconda-4.4/bin:$PATH
 which jupyterhub-singleuser
