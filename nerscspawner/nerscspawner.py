@@ -79,8 +79,9 @@ class NERSCSpawner(WrapSpawner):
         if formdata.get("custom", ["false"])[0] == "true":
             prefix = profile + "-"
             start = len(prefix)
-            for key in formdata if key.startswith(prefix):
-                options[key[start:]] = formdata[key][0]
+            for key in formdata:
+                if key.startswith(prefix):
+                    options[key[start:]] = formdata[key][0]
        
         self.log.debug(options)
 
