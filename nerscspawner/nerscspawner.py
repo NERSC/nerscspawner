@@ -70,7 +70,11 @@ class NERSCSpawner(WrapSpawner):
 
     def options_from_form(self, formdata):
         # Default to first profile if somehow none is provided
-        return dict(profile=formdata.get("profile", [self.profiles[0][0]])[0])
+        options = dict(
+                profile=formdata.get("profile", [self.profiles[0][0]])[0],
+                custom=formdata.get("custom", ["false"])[0])
+        self.log.debug(options)
+        return options
 
     # load/get/clear : save/restore child_profile (and on load, use it to update child class/config)
 

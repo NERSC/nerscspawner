@@ -35,21 +35,21 @@
                         <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" id="gerty-shared"></td>
                         <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" id="gerty-exclusive-cpu"></td>
                         <td class="text-center"></td>
-                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#gerty-configuration">Configure</button></td>
+                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#gerty-menu">Configure</button></td>
                     </tr>
                     <tr>
                         <th>Cori</th>
                         <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" disabled></td>
                         <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" disabled></td>
                         <td class="text-center"></td>
-                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#cori-configuration" disabled>Configure</button></td>
+                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#cori-menu" disabled>Configure</button></td>
                     </tr>
                     <tr>
                         <th>NERSC9</th>
                         <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" disabled></td>
                         <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" disabled></td>
                         <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" disabled></td>
-                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#n9-configuration" disabled>Configure</button></td>
+                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#n9-menu" disabled>Configure</button></td>
                     </tr>
                     <tr>
                         <th>Spin</th>
@@ -87,7 +87,7 @@
             </table>
 
             <!-- Gerty Configuration Modal -->
-            <div class="modal fade" id="gerty-configuration" tabindex="-1" role="dialog" aria-labelledby="gertyConfigLabel">
+            <div class="modal fade" id="gerty-menu" tabindex="-1" role="dialog" aria-labelledby="gertyConfigLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -97,15 +97,15 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="nodes">Nodes</label>
-                                <input class="form-control" type="number" id="nodes" min="1" max="50" step="1" value="1">
+                                <input class="form-control" type="number" name="gerty-config-nodes" min="1" max="50" step="1" value="1">
                             </div>
                             <div class="form-group">
                                 <label for="timelimit">Time Limit (minutes)</label>
-                                <input class="form-control" type="number" id="nodes" min="1" max="240" step="1" value="120">
+                                <input class="form-control" type="number" name="gerty-config-timelimit" min="1" max="240" step="1" value="120">
                             </div>
                             <div class="form-group">
                                 <label for="account">Repository</label>
-                                <select class="form-control" id="account">
+                                <select class="form-control" name="gerty-config-account">
                                     {% for account in spawner.accounts %}
                                     <option>{{ account }} {{ "(default)" if loop.first }}</option>
                                     {% endfor %}
@@ -113,22 +113,21 @@
                             </div>
                             <div class="form-group">
                                 <label for="constraint">Constraint</label>
-                                <select class="form-control" id="constraint">
+                                <select class="form-control" name="gerty-config-constraint">
                                     <option>Haswell</option>
                                     <option>KNL</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="qos">QOS</label>
-                                <select class="form-control" id="qos">
-                                    <option>jupyter</option>
+                                <select class="form-control" name="gerty-config-qos">
+                                    <option>interactive</option>
                                     <option>regular</option>
-                                    <option>premium</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="image">Shifter Image</label>
-                                <select class="form-control" id="image">
+                                <select class="form-control" name="gerty-config-image">
                                     <option>(None)</option>
                                     <option>rcthomas/anaconda3-4.4.0-distributed-1.18.0:latest</option>
                                     <option>rcthomas/dask:0.0.1</option>
@@ -140,7 +139,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="reservation">Reservation</label>
-                                <select class="form-control" id="reservation">
+                                <select class="form-control" name="gerty-config-reservation">
                                     <option>(None)</option>
                                     <option>GORDON_BELL_2020</option>
                                 </select>
@@ -148,14 +147,14 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                            <input type="submit" class="btn btn-jupyter" value="Spawn" id="gerty-configurable"></td>
+                            <input type="submit" class="btn btn-jupyter" value="Spawn" id="gerty-config"></td>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Cori Configuration Modal -->
-            <div class="modal fade" id="cori-configuration" tabindex="-1" role="dialog" aria-labelledby="coriConfigLabel">
+            <div class="modal fade" id="cori-menu" tabindex="-1" role="dialog" aria-labelledby="coriConfigLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -174,7 +173,7 @@
             </div>
 
             <!-- NERSC 9 Configuration Modal -->
-            <div class="modal fade" id="n9-configuration" tabindex="-1" role="dialog" aria-labelledby="n9ConfigLabel">
+            <div class="modal fade" id="n9-menu" tabindex="-1" role="dialog" aria-labelledby="n9ConfigLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -193,6 +192,7 @@
             </div>
 
             <input id="profile" name="profile" type="hidden" value="none">
+            <input id="custom" name="custom" type="hidden" value="false">
 
             <!--
             <br>
@@ -222,8 +222,9 @@ $("form").submit(function() {
     if(id == "gerty-exclusive-cpu") {
         $("#profile").val(id);
     }
-    if(id == "gerty-configurable") {
+    if(id == "gerty-config") {
         $("#profile").val(id);
+        $("#custom").val("true");
     }
 });
 
