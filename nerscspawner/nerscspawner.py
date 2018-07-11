@@ -101,6 +101,7 @@ class NERSCSpawner(WrapSpawner):
     def construct_child(self):
         self.child_profile = self.user_options.get("profile", "")
         self.select_profile(self.child_profile)
+        self.child_config.update(self.user_options)
         self.log.debug("child config {}".format(self.child_config))
         super().construct_child()
 
