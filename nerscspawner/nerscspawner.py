@@ -69,11 +69,21 @@ class NERSCSpawner(WrapSpawner):
         return urllib.parse.urljoin(self.nim_base_url, os.path.join(*args))
 
     def options_from_form(self, formdata):
+
         # Default to first profile if somehow none is provided
-        options = dict(
-                profile=formdata.get("profile", [self.profiles[0][0]])[0],
-                custom=formdata.get("custom", ["false"])[0])
+
+        profile = formdata.get("profile", [self.profiles[0][0]])[0]
+        options = dict(profile=profile)
+
+        # FIXME Need to validate these values
+        if formdata.get("custom", ["false"])[0] == "true":
+            prefix = profile + "-"
+            start = len(prefix)
+            for key in formdata if key.startswith(prefix):
+                options[key[start:]] = formdata[key][0]
+       
         self.log.debug(options)
+
         return options
 
     # load/get/clear : save/restore child_profile (and on load, use it to update child class/config)
