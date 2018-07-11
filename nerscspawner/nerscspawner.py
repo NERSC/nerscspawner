@@ -81,7 +81,8 @@ class NERSCSpawner(WrapSpawner):
             start = len(prefix)
             for key in formdata:
                 if key.startswith(prefix):
-                    options[key[start:]] = formdata[key][0]
+                    req = "req_" + key[start:]
+                    options[req] = formdata[key][0]
        
         self.log.debug(options)
 
