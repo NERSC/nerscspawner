@@ -136,6 +136,10 @@ class NERSCSlurmSpawner(BatchSpawnerRegexStates):
 
     # all these req_foo traits will be available as substvars for templated strings
 
+    req_nodes = Unicode('1',
+            help="Number of nodes",
+            config=True)
+
     req_qos = Unicode('regular',
             help="QoS name to submit job to resource manager"
             ).tag(config=True)
@@ -160,8 +164,10 @@ class NERSCSlurmSpawner(BatchSpawnerRegexStates):
         return text
 
     batch_script = Unicode("""#!/bin/bash
+#SBATCH --account={account}
 #SBATCH --constraint={constraint}
 #SBATCH --job-name=jupyter
+#SBATCH --nodes={nodes}
 #SBATCH --output=jupyter-%j.log
 #SBATCH --qos={qos}
 #SBATCH --sdn
