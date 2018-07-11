@@ -107,15 +107,15 @@
                                 <label for="account">Repository</label>
                                 <select class="form-control" name="gerty-config-account">
                                     {% for account in spawner.accounts %}
-                                    <option>{{ account }} {{ "(default)" if loop.first }}</option>
+                                    <option value="{{ account }}">{{ account }} {{ "(default)" if loop.first }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="constraint">Constraint</label>
                                 <select class="form-control" name="gerty-config-constraint">
-                                    <option>Haswell</option>
-                                    <option>KNL</option>
+                                    <option>haswell</option>
+                                    <option>knl</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -128,7 +128,7 @@
                             <div class="form-group">
                                 <label for="image">Shifter Image</label>
                                 <select class="form-control" name="gerty-config-image">
-                                    <option>(None)</option>
+                                    <option></option>
                                     <option>rcthomas/anaconda3-4.4.0-distributed-1.18.0:latest</option>
                                     <option>rcthomas/dask:0.0.1</option>
                                     <option>rcthomas/nersc-mpi4py-import:0.0.1</option>
@@ -140,7 +140,7 @@
                             <div class="form-group">
                                 <label for="reservation">Reservation</label>
                                 <select class="form-control" name="gerty-config-reservation">
-                                    <option>(None)</option>
+                                    <option></option>
                                     <option>GORDON_BELL_2020</option>
                                 </select>
                             </div>
