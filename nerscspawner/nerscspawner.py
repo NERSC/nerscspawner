@@ -187,10 +187,9 @@ class NERSCSlurmSpawner(BatchSpawnerRegexStates):
 #SBATCH --sdn
 #SBATCH --time={{ runtime }}
 
-export PATH=/global/common/cori/software/python/3.6-anaconda-4.4/bin:$PATH
-which jupyterhub-singleuser
 {{ env_text }}
 unset XDG_RUNTIME_DIR
+which jupyterhub-singleuser
 {{ cmd }}
 """).tag(config=True)
 
