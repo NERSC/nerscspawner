@@ -172,20 +172,30 @@ class NERSCSlurmSpawner(BatchSpawnerRegexStates):
         return text
 
     batch_script = Unicode("""#!/bin/bash
+{% if account -%}
 #SBATCH --account={{ account }}
+{% endif -%}
+{% if constraint -%}
 #SBATCH --constraint={{ constraint }}
+{% endif -%}
 {% if image -%}
 #SBATCH --image={{ image }}
 {% endif -%}
 #SBATCH --job-name=jupyter
+{% if nodes -%}
 #SBATCH --nodes={{ nodes }}
+{% endif -%}
 #SBATCH --output=jupyter-%j.log
+{% if qos -%}
 #SBATCH --qos={{ qos }}
+{% endif -%}
 {% if reservation -%}
 #SBATCH --reservation={{ reservation }}
 {% endif -%}
 #SBATCH --sdn
+{% if runtime -%}
 #SBATCH --time={{ runtime }}
+{% endif -%}
 
 {{ env_text }}
 unset XDG_RUNTIME_DIR
