@@ -24,12 +24,13 @@
                     <tr>
                         <th class="text-center">System</th>
                         <th class="text-center">Shared Node</th>
-                        <th class="text-center">Exclusive CPU Node</th>
-                        <!-- <th class="text-center">Exclusive GPU Node</th> -->
+                        <th class="text-center">Exclusive {# CPU #} Node</th>
+                        {# <th class="text-center">Exclusive GPU Node</th> #}
                         <th class="text-center">Customized Spawn</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {#
                     <tr>
                         <th>Gerty</th>
                         <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" id="gerty-shared"></td>
@@ -37,14 +38,15 @@
                         <!-- <td class="text-center"></td> -->
                         <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#gerty-menu">Configure</button></td>
                     </tr>
-                    <!--
+                    #}
                     <tr>
                         <th>Cori</th>
-                        <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" disabled></td>
-                        <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" disabled></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#cori-menu" disabled>Configure</button></td>
+                        <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" id="cori-shared"></td>
+                        <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" id="cori-exclusive-cpu" disabled></td>
+                        {# <td class="text-center"></td> #}
+                        <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#cori-menu" id="cori-config" disabled>Configure</button></td>
                     </tr>
+                    {#
                     <tr>
                         <th>NERSC9</th>
                         <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" disabled></td>
@@ -52,12 +54,12 @@
                         <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" disabled></td>
                         <td class="text-center"><button type="button" class="btn btn-jupyter" data-toggle="modal" data-target="#n9-menu" disabled>Configure</button></td>
                     </tr>
-                    -->
+                    #}
                     <tr>
                         <th>Spin</th>
                         <td class="text-center"><input type="submit" class="btn btn-jupyter" value="Spawn" id="spin"></td>
                         <td class="text-center"></td>
-                        <!-- <td class="text-center"></td> -->
+                        {# <td class="text-center"></td> #}
                         <td class="text-center"></td>
                     </tr>
                 </tbody>
@@ -88,6 +90,26 @@
                 </tfoot>
             </table>
 
+            <!-- Cori Configuration Modal -->
+            <div class="modal fade" id="cori-menu" tabindex="-1" role="dialog" aria-labelledby="coriConfigLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Configure Cori Jupyter Session</h4>
+                        </div>
+                        <div class="modal-body">
+                             
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-jupyter">Spawn</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {#
             <!-- Gerty Configuration Modal -->
             <div class="modal fade" id="gerty-menu" tabindex="-1" role="dialog" aria-labelledby="gertyConfigLabel">
                 <div class="modal-dialog" role="document">
@@ -153,26 +175,9 @@
                     </div>
                 </div>
             </div>
+            #}
 
-            <!-- Cori Configuration Modal -->
-            <div class="modal fade" id="cori-menu" tabindex="-1" role="dialog" aria-labelledby="coriConfigLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Configure Cori Jupyter Session</h4>
-                        </div>
-                        <div class="modal-body">
-                             
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-jupyter">Spawn</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            {#
             <!-- NERSC 9 Configuration Modal -->
             <div class="modal fade" id="n9-menu" tabindex="-1" role="dialog" aria-labelledby="n9ConfigLabel">
                 <div class="modal-dialog" role="document">
@@ -191,6 +196,7 @@
                     </div>
                 </div>
             </div>
+            #}
 
             <input id="profile" name="profile" type="hidden" value="none">
             <input id="custom" name="custom" type="hidden" value="false">
@@ -217,13 +223,13 @@ $("form").submit(function() {
     if(id == "spin") {
         $("#profile").val(id);
     }
-    if(id == "gerty-shared") {
+    if(id == "cori-shared") {
         $("#profile").val(id);
     }
-    if(id == "gerty-exclusive-cpu") {
+    if(id == "cori-exclusive-cpu") {
         $("#profile").val(id);
     }
-    if(id == "gerty-config") {
+    if(id == "cori-config") {
         $("#profile").val(id);
         $("#custom").val("true");
     }
