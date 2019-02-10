@@ -48,5 +48,5 @@ class NERSCSpawner(WrapSpawner):
         self.child_profile = ''
 
     @property
-    def update_model(self):
+    def model_updated(self):
         return True
