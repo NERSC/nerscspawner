@@ -1,4 +1,6 @@
 
+from jupyterhub.spawner import LocalProcessSpawner
+
 from traitlets import List, Dict, Unicode
 
 from wrapspawner import WrapSpawner
@@ -24,7 +26,10 @@ class NERSCSpawner(WrapSpawner):
     child_profile = Unicode()
 
     def select_profile(self, profile):
-        self.child_class, self.child_config = self.spawners[profile]
+        try:
+            self.child_class, self.child_config = self.spawners[profile]
+        except KeyError:
+            self.child_class, self.child_config = LocalProcessSpawner, {}  # This should be like, a NullSpawner
 
     def construct_child(self):
         self.child_profile = self.user_options.get('profile', "")
