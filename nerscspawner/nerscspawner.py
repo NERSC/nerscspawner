@@ -50,9 +50,6 @@ class NERSCSpawner(WrapSpawner):
         super().clear_state()
         self.child_profile = ''
 
-    def user_env(self, env):
-        return env
-
     @property
     def model_updated(self):
         return True
