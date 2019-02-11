@@ -42,6 +42,8 @@ class NERSCSpawner(WrapSpawner):
         self.child_profile = self.name
         self.select_profile(self.child_profile)
         super().construct_child()
+        self.child_spawner.orm_spawner = self.orm_spawner  ### IS THIS KOSHER?!?!!?
+        ### Think we need to do this to get JUPYTERHUB_OAUTH_CALLBACK_URL set properly
 
     def load_child_class(self, state):
         try:
