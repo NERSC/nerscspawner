@@ -26,10 +26,8 @@ class NERSCSpawner(WrapSpawner):
     child_profile = Unicode()
 
     def select_profile(self, profile):
-        try:
-            self.child_class, self.child_config = self.spawners[profile]
-        except KeyError:
-            self.child_class, self.child_config = LocalProcessSpawner, {}  # This should be like, a NullSpawner
+        self.log.debug("select_profile:", profile)
+        self.child_class, self.child_config = self.spawners[profile]
 
     def construct_child(self):
         self.child_profile = self.user_options.get('profile', "")
