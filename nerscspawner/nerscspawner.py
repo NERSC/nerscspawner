@@ -5,6 +5,11 @@ from traitlets import List, Dict, Unicode
 
 from wrapspawner import WrapSpawner
 
+class NullSpawner(LocalProcessSpawner):
+
+    def user_env(self, env):
+        return env
+
 class NERSCSpawner(WrapSpawner):
 
     profiles = List(Dict(),
@@ -26,8 +31,11 @@ class NERSCSpawner(WrapSpawner):
     child_profile = Unicode()
 
     def select_profile(self, profile):
-        self.log.debug("select_profile:", profile)
-        self.child_class, self.child_config = self.spawners[profile]
+        self.log.debug("select_profile: " + profile)
+        try:
+            self.child_class, self.child_config = self.spawners[profile]
+        except KeyError:
+            self.child_class, self.child_config = NullSpawner, {}
 
     def construct_child(self):
         self.child_profile = self.user_options.get('profile', "")
