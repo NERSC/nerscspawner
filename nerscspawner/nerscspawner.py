@@ -24,7 +24,7 @@ class NERSCSpawner(WrapSpawner):
             help="TBD",
             config=True)
 
-    spawners = Dict(
+    profile_spawners = Dict(
             help="TBD",
             config=True)
 
@@ -33,7 +33,7 @@ class NERSCSpawner(WrapSpawner):
     def select_profile(self, profile):
         self.log.debug("select_profile: " + profile)
         try:
-            self.child_class, self.child_config = self.spawners[profile]
+            self.child_class, self.child_config = self.profile_spawners[profile]
         except KeyError:
             self.child_class, self.child_config = NullSpawner, {}
 
