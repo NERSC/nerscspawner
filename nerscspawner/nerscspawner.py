@@ -32,9 +32,9 @@ class NERSCSpawner(WrapSpawner):
 
     def select_profile(self, profile):
         self.log.debug("select_profile: " + profile)
-        try:
+        if profile in self.spawners:
             self.child_class, self.child_config = self.spawners[profile]
-        except KeyError:
+        else:
             self.child_class, self.child_config = NullSpawner, {}
 
     def construct_child(self):
@@ -44,8 +44,6 @@ class NERSCSpawner(WrapSpawner):
         super().construct_child()
         self.child_spawner.orm_spawner = self.orm_spawner  ### IS THIS KOSHER?!?!!?
         self.options_form = self.child_spawner.options_form # another one...
-#       self.options_from_form = self.child_spawner.options_from_form # yet another, check if need
-#       self.user_options = self.child_spawner.user_options # just a guess
         ### Think we need to do this to get JUPYTERHUB_OAUTH_CALLBACK_URL set properly
 
     def load_child_class(self, state):
