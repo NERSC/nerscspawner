@@ -46,6 +46,7 @@ class NERSCSpawner(WrapSpawner):
         self.child_spawner.orm_spawner = self.orm_spawner  ### IS THIS KOSHER?!?!!?
         self.options_form = self.child_spawner.options_form # another one...
         self.options_from_form = self.child_spawner.options_from_form
+        self.child_spawner.user_options = self.user_options
         ### Think we need to do this to get JUPYTERHUB_OAUTH_CALLBACK_URL set properly
 
     def load_child_class(self, state):
@@ -71,5 +72,4 @@ class NERSCSpawner(WrapSpawner):
 
     @observe("user_options")
     def _observe_user_options(self, change): 
-        self.child_spawner.user_options = change["new"]
-        self.log.debug("IT IS OBSERVED " + str(self.child_spawner.user_options))
+        self.log.debug("IT IS OBSERVED " + str(change))
