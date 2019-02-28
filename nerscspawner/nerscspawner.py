@@ -38,6 +38,7 @@ class NERSCSpawner(WrapSpawner):
             self.child_class, self.child_config = NullSpawner, {}
 
     def construct_child(self):
+        self.log.debug("construct_child called")
         # self.child_profile = self.user_options.get('profile', "")
         self.child_profile = self.name
         self.select_profile(self.child_profile)
@@ -48,6 +49,7 @@ class NERSCSpawner(WrapSpawner):
         ### Think we need to do this to get JUPYTERHUB_OAUTH_CALLBACK_URL set properly
 
     def load_child_class(self, state):
+        self.log.debug("load_child_class called")
         try:
             self.child_profile = state['profile']
         except KeyError:
