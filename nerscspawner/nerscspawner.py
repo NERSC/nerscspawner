@@ -1,7 +1,7 @@
 
 from jupyterhub.spawner import LocalProcessSpawner
 
-from traitlets import List, Dict, Unicode
+from traitlets import List, Dict, Unicode, observe
 
 from wrapspawner import WrapSpawner
 
@@ -61,11 +61,13 @@ class NERSCSpawner(WrapSpawner):
 
     def clear_state(self):
         super().clear_state()
-        self.log.debug("nersc spawner clear_state check")
-        for key in self.user_options:
-            self.log.debug("options from form " + key + " " + self.user_options[key])
         self.child_profile = ''
 
     @property
     def model_updated(self):
         return True
+
+    @observe("user_options")
+    def _observe_user_options(self, change): 
+        self.log.debug("IT IS OBSERVED")
+        self.child_spawner.user_options = change["new"]
