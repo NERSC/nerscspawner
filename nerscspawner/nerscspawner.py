@@ -69,5 +69,5 @@ class NERSCSpawner(WrapSpawner):
 
     @observe("user_options")
     def _observe_user_options(self, change): 
-        self.log.debug("IT IS OBSERVED")
+        self.log.debug("IT IS OBSERVED" + change)
         self.child_spawner.user_options = change["new"]
