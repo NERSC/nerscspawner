@@ -65,3 +65,8 @@ class NERSCSpawner(WrapSpawner):
     @property
     def model_updated(self):
         return True
+
+    @property
+    def user_options(self):
+        self.log.debug("user_options CALLED")
+        return self.child_spawner.user_option
