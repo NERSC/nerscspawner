@@ -61,6 +61,9 @@ class NERSCSpawner(WrapSpawner):
 
     def clear_state(self):
         super().clear_state()
+        self.log.debug("nersc spawner clear_state check")
+        for key in self.user_options:
+            self.log.debug("options from form " + key + " " + self.user_options[key])
         self.child_profile = ''
 
     @property
