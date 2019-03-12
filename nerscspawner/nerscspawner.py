@@ -1,7 +1,8 @@
 
+from jupyterhub.spawner import LocalProcessSpawner
+
 from traitlets import List, Dict, Unicode, observe
 
-from jupyterhub.spawner import Spawner
 from wrapspawner import WrapSpawner
 
 class NERSCSpawner(WrapSpawner):
@@ -29,7 +30,7 @@ class NERSCSpawner(WrapSpawner):
         if profile in self.spawners:
             self.child_class, self.child_config = self.spawners[profile]
         else:
-            self.child_class, self.child_config = Spawner, {}
+            self.child_class, self.child_config = LocalProcessSpawner, {}
 
     def construct_child(self):
         self.log.debug("construct_child called")
