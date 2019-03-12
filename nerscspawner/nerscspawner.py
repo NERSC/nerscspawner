@@ -1,14 +1,8 @@
 
-from jupyterhub.spawner import LocalProcessSpawner
-
 from traitlets import List, Dict, Unicode, observe
 
+from jupyterhub.spawner import Spawner
 from wrapspawner import WrapSpawner
-
-class NullSpawner(LocalProcessSpawner):
-
-    def user_env(self, env):
-        return env
 
 class NERSCSpawner(WrapSpawner):
 
@@ -35,7 +29,7 @@ class NERSCSpawner(WrapSpawner):
         if profile in self.spawners:
             self.child_class, self.child_config = self.spawners[profile]
         else:
-            self.child_class, self.child_config = NullSpawner, {}
+            self.child_class, self.child_config = Spawner, {}
 
     def construct_child(self):
         self.log.debug("construct_child called")
@@ -72,4 +66,4 @@ class NERSCSpawner(WrapSpawner):
 
     @observe("user_options")
     def _observe_user_options(self, change): 
-        self.log.debug("IT IS OBSERVED " + str(change))
+        self.log.debug("user_options observed: " + str(change))
